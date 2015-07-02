@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  table.table
+    thead
+      tr
+        th HTTP verb
+        th API endpoint
+        th description
+    tbody
+      tr
+        td GET
+        td /test
+        td just testing
