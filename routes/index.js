@@ -75,8 +75,32 @@ router.get('/questions/:id', function(req, res, next) {
   });
 });
 
+router.patch('/questions/:id', function(req, res, next) {
+  console.log(req.body);
+  Question.findOneAndUpdate({slug: req.params.id}, req.body, {new: true}, function(error, data){
+    if (error){
+      return;
+    }
+    if(!data){
+      res.status(404).json({error: 'question does not exist'});
+      return;
+    }
+    res.json(data);
+  });
+});
+
 router.delete('/questions/:id', function(req, res, next) {
-  Question.remove({slug: req.params.id}, {justOne: true});
+  console.log(req.body);
+  Question.findOneAndRemove({slug: req.params.id}, function(error, data){
+    if (error){
+      return;
+    }
+    if(!data){
+      res.status(404).json({error: 'question does not exist'});
+      return;
+    }
+    res.json({message: "deleted"});
+  });
 });
 
 module.exports = router;

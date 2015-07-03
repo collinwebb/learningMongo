@@ -65,13 +65,49 @@ describe('Our API', function(){
       done();
     });
   });
+  describe('PATCH /questions/:questionCode', function(){
+    it("returns a 404 if the question does not exist", function(done) {
+      request.patch("/questions/sjdfljdsoqiwenrhasdlfiio")
+        .end(function(err, res) {
+        if (err) { throw err; }
+        expect(res.status).to.equal(404);
+        done();
+      });
+    });
+    it("update the question with new data", function(done) {
+      request.patch("/questions/one-test-question")
+      .send({body: 'it is new now', email: 'hacker@test.com'})
+        .end(function(err, res) {
+        if (err) { throw err; }
+        expect(res.status).to.equal(200);
+        expect(res.body.body).to.equal('it is new now');
+        expect(res.body.email).to.equal('hacker@test.com');
+        done();
+      });
+    });
+  });
   describe('DELETE /questions/:questionCode', function(){
+    it("returns a 404 if the question does not exist", function(done) {
+      request.del("/questions/sjdfljdsoqiwenrhasdlfiio")
+        .end(function(err, res) {
+        if (err) { throw err; }
+        expect(res.status).to.equal(404);
+        done();
+      });
+    });
     it("deletes an entry", function(done) {
       request.del("/questions/one-test-question")
         .end(function(err, res) {
         if (err) { throw err; }
-        console.log(res.body);
         expect(res.status).to.equal(200);
+        done();
+      });
+    });
+    it("entry is deleted", function(done) {
+      request.get("/questions/one-test-question")
+        .end(function(err, res) {
+        if (err) { throw err; }
+        expect(res.status).to.equal(404);
         done();
       });
     });
