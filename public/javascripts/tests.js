@@ -88,7 +88,7 @@ describe('Our API', function(){
   });
   describe('DELETE /questions/:questionCode', function(){
     it("returns a 404 if the question does not exist", function(done) {
-      request.del("/questions/sjdfljdsoqiwenrhasdlfiio")
+      request.del("/questions/sjdfljdsoqiwensererrhasdlfiio")
         .end(function(err, res) {
         if (err) { throw err; }
         expect(res.status).to.equal(404);
