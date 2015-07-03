@@ -13,4 +13,21 @@ block content
       tr
         td GET
         td /test
-        td just testing
+        td sends: 'just testing'
+      tr
+        td POST
+        td /test
+        td
+          .what echo the server time + body variables in JSON {serverTime: .... }
+          code.example /test {a: 7, b: 'testing'} => {serverTime: '....', a: 7, b: 'testing' }
+      tr
+        td GET
+        td /questions
+        td
+          .what list all questions in the database
+      tr
+        td POST
+        td /questions
+        td
+          .what create and save a new question + server time
+          code.example /questions {email: test@test.test, body: 'who am I?'} => {email: test@test.test, body: 'who am I?', createdAt: '2015-07-02T18...'}
