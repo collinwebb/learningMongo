@@ -65,7 +65,6 @@ router.post('/questions', function(req, res){
 });
 
 router.get('/questions/:id', function(req, res, next) {
-  console.log(req.params.id);
   Question.findOne({slug: req.params.id}, function(err, data) {
     if(!data){
       res.status(404).json({error: 'question does not exist'});
@@ -76,7 +75,6 @@ router.get('/questions/:id', function(req, res, next) {
 });
 
 router.patch('/questions/:id', function(req, res, next) {
-  console.log(req.body);
   Question.findOneAndUpdate({slug: req.params.id}, req.body, {new: true}, function(error, data){
     if (error){
       return;
@@ -90,7 +88,6 @@ router.patch('/questions/:id', function(req, res, next) {
 });
 
 router.delete('/questions/:id', function(req, res, next) {
-  console.log(req.body);
   Question.findOneAndRemove({slug: req.params.id}, function(error, data){
     if (error){
       return;
@@ -100,6 +97,16 @@ router.delete('/questions/:id', function(req, res, next) {
       return;
     }
     res.json({message: "deleted"});
+  });
+});
+
+router.get('/questions/:id/answers', function(req, res, next) {
+  Question.findOne({slug: req.params.id}, function(err, data) {
+    if(!data.answers){
+      res.status(404).json({error: 'answers do not exist'});
+      return;
+    }
+    res.json(data.answers);
   });
 });
 
