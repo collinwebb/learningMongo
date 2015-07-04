@@ -19,11 +19,12 @@ var Question = mongoose.model("Question", {
   createdAt: {type: Date, default: new Date()},
   slug: {type: String, required: true, unique: true},
   gravatarUrl: String,
-});
-
-var Answer = mongoose.model('Answer', {
-  slug: String,
-  answers: Array,
+  answers: [{
+    body: {type: String, required: true},
+    email: {type: String, required: true},
+    createdAt: {type: Date, default: new Date()},
+    gravatarUrl: String,
+  }],
 });
 
 Question.on('index', function(error){
@@ -105,24 +106,23 @@ router.delete('/questions/:id', function(req, res, next) {
   });
 });
 
-router.get('/questions/:id/answers', function(req, res, next) {
-  Answer.find({slug: req.params.id}, function(err, data) {
-    if(!data){
-      res.status(404).json({error: 'answers do not exist'});
+router.post('/questions/:id/answers', function(req, res, next) {
+  Question.findOne({slug: req.params.id}, function(error, data){
+    if (error){
+      res.status(400).json({error: 'could not find question'})
       return;
     }
-    res.json(data);
-  });
-});
-
-router.post('/questions/:id/answers', function(req, res){
-  var answer = new Answer(req.body);
-  answer.slug = (req.params.id || "");
-  answer.save(function(error, data){
-    if (error){
-      res.status(400).json({error: 'validation failed'});
+    if(!data){
+      res.status(404).json({error: 'question does not exist'});
+      return;
     }
-    res.json(data);
+    question.answers.push(req.body)
+    question.save(function(error, data){
+      if (error){
+        res.status(400).json({error: 'could not save answer'});
+      }
+      res.json(data);
+    });
   });
 });
 
