@@ -116,7 +116,9 @@ router.post('/questions/:id/answers', function(req, res, next) {
       res.status(404).json({error: 'question does not exist'});
       return;
     }
-    question.answers.push(req.body);
+    var answer = req.body;
+    answer.gravatarUrl = "http://www.gravatar.com/avatar/" + MD5(answer.email);
+    question.answers.push(answer);
     question.save(function(error, data){
       if (error){
         res.status(400).json({error: 'could not save answer'});
