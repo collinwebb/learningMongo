@@ -18,7 +18,7 @@ var Question = mongoose.model("Question", {
   email: {type: String, required: true},
   createdAt: {type: Date, default: new Date()},
   slug: {type: String, required: true, unique: true},
-  gravatarURL: String,
+  gravatarUrl: String,
 });
 
 Question.on('index', function(error){
@@ -54,7 +54,7 @@ router.get('/questions', function(req, res){
 
 router.post('/questions', function(req, res){
   var ask = new Question(req.body);
-  ask.gravatarURL = "http://www.gravatar.com/avatar/" + MD5(ask.email);
+  ask.gravatarUrl = "http://www.gravatar.com/avatar/" + MD5(ask.email);
   ask.slug = slug(ask.body || "");
   ask.save(function(error, savedQuestion){
     if (error){
