@@ -110,4 +110,17 @@ router.get('/questions/:id/answers', function(req, res, next) {
   });
 });
 
+router.post('/questions/:id/answers', function(req, res){
+  Question.findOneAndUpdate({slug: req.params.id}, req.body, {new: true}, function(error, data){
+    if (error){
+      return;
+    }
+    if(!data){
+      res.status(404).json({error: 'question does not exist'});
+      return;
+    }
+    res.json(data);
+  });
+});
+
 module.exports = router;
