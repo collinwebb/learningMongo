@@ -21,6 +21,11 @@ var Question = mongoose.model("Question", {
   gravatarUrl: String,
 });
 
+var Answer = mongoose.model('Answer', {
+  slug: String,
+  answers: Array,
+});
+
 Question.on('index', function(error){
   if (error){
     console.log(error);
@@ -101,23 +106,21 @@ router.delete('/questions/:id', function(req, res, next) {
 });
 
 router.get('/questions/:id/answers', function(req, res, next) {
-  Question.findOne({slug: req.params.id}, function(err, data) {
-    if(!data.answers){
+  Answer.find({slug: req.params.id}, function(err, data) {
+    if(!data){
       res.status(404).json({error: 'answers do not exist'});
       return;
     }
-    res.json(data.answers);
+    res.json(data);
   });
 });
 
 router.post('/questions/:id/answers', function(req, res){
-  Question.findOneAndUpdate({slug: req.params.id}, req.body.answers, {upsert: true}, function(error, data){
+  var answer = new Answer(req.body);
+  answer.slug = (req.params.id || "");
+  answer.save(function(error, data){
     if (error){
-      return;
-    }
-    if(!data){
-      res.status(404).json({error: 'question does not exist'});
-      return;
+      res.status(400).json({error: 'validation failed'});
     }
     res.json(data);
   });
