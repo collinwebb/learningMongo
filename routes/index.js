@@ -109,14 +109,14 @@ router.delete('/questions/:id', function(req, res, next) {
 router.post('/questions/:id/answers', function(req, res, next) {
   Question.findOne({slug: req.params.id}, function(error, data){
     if (error){
-      res.status(400).json({error: 'could not find question'})
+      res.status(400).json({error: 'could not find question'});
       return;
     }
     if(!data){
       res.status(404).json({error: 'question does not exist'});
       return;
     }
-    question.answers.push(req.body)
+    question.answers.push(req.body);
     question.save(function(error, data){
       if (error){
         res.status(400).json({error: 'could not save answer'});
