@@ -111,7 +111,7 @@ router.get('/questions/:id/answers', function(req, res, next) {
 });
 
 router.post('/questions/:id/answers', function(req, res){
-  Question.findOneAndUpdate({slug: req.params.id}, req.body.answers, {new: true}, function(error, data){
+  Question.findOneAndUpdate({slug: req.params.id}, req.body.answers, {upsert: true}, function(error, data){
     if (error){
       return;
     }
